@@ -619,8 +619,16 @@ Notes:
         include_config=True,
         catch_exceptions=None,
         meta=None,
+        include_whitespace=None,
     ):
-
+        """
+        The duplicated function in pandas includes leading and trailing whitespaces when evaluating uniqueness.
+        For example, 'great', ' great', and 'great ' would be considered unique. Some users, however,
+        want to test for uniqueness and exclude leading/trailing whitespaces since that can be the result of human input error.
+        When include_whitespace=True, leading and trailing whitespace will be removed and then uniqueness will be evaluated.
+        """
+        if include_whitespace:
+            column = column.str.strip()
         return ~column.duplicated(keep=False)
 
     @DocInherit
